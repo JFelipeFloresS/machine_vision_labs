@@ -1,0 +1,5 @@
+output/images/*
+output/videos/*
+.DS_Store
+.idea
+__pycache__/
