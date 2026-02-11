@@ -12,7 +12,7 @@ class Lab1Menu(AbstractMenu):
              3: "View Latest Image",
              9: "Back to Main Menu",
              99: "Exit"}
-        super().__init__("Main Menu", main_menu_options)
+        super().__init__("Lab 1 Menu", main_menu_options)
 
     def execute_choice(self, choice):
         if choice == 1:

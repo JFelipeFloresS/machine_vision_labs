@@ -1,10 +1,15 @@
-import cv2
-import os
 import datetime
+import os
+
+import cv2
 
 from utils.file_utils import VIDEO_DIR, IMAGE_DIR
 
+
 def setup_camera():
+    """
+    :return: camera object, video writer object, fps
+    """
     camera = cv2.VideoCapture(0)
     fps = camera.get(cv2.CAP_PROP_FPS)
 
@@ -20,7 +25,13 @@ def setup_camera():
     out = cv2.VideoWriter(video_abspath, fourcc, fps, (width, height))
     return camera, out, fps
 
+
 def capture_video():
+    """
+    Create a Python program that captures an image sequence from your web camera and saves it as a video to a file using OpenCV.
+    Also display the video on screen while you are recording it.
+    :return: None
+    """
     camera, out, fps = setup_camera()
     frame = 0
     recording = False
@@ -35,13 +46,13 @@ def capture_video():
             cv2.imshow("Camera", img)
 
         key = cv2.waitKey(1)
-        if key%256 == 32:  # SPACE pressed
+        if key % 256 == 32:  # SPACE pressed
             recording = not recording
             if recording:
                 print("Started recording...")
             else:
                 print("Stopped recording.")
-        elif key%256 == 27:  # ESC pressed
+        elif key % 256 == 27:  # ESC pressed
             print("Exiting...")
             break
 
@@ -50,7 +61,11 @@ def capture_video():
     cv2.destroyAllWindows()
     cv2.waitKey(1)  # Force OpenCV to process window events and close
 
+
 def get_latest_video_path():
+    """
+    :return: Path to the latest video file.
+    """
     video_files = [f for f in os.listdir(VIDEO_DIR) if f.endswith('.avi')]
     if not video_files:
         return None
@@ -62,7 +77,13 @@ def get_latest_video_path():
     print(f"Latest video path: {video_path}")
     return video_path
 
+
 def get_video(video_path):
+    """
+    Get video capture object for the given video path.
+    :param video_path: Path to the video file.
+    :return: VideoCapture object.
+    """
     # get all frames from the latest video
     camera = cv2.VideoCapture(video_path)
     fps = camera.get(cv2.CAP_PROP_FPS)
@@ -74,13 +95,23 @@ def get_video(video_path):
 
     return camera
 
+
 def get_image_path_from_video(video_path):
+    """
+    :param video_path: Path to the video file.
+    :return: Path to the corresponding image file.
+    """
     video_filename = os.path.basename(video_path)
     image_filename = os.path.splitext(video_filename)[0] + '.jpg'
     image_path = os.path.join(IMAGE_DIR, image_filename)
     return image_path
 
+
 def generate_image():
+    """
+    Create a Python program that loads the video file created in task 1, extracts the 10th frame from this file and saves this frame into an image file using OpenCV.
+    :return: None
+    """
     latest_video_path = get_latest_video_path()
 
     # get all frames from the latest video
@@ -98,7 +129,12 @@ def generate_image():
 
     camera.release()
 
+
 def get_latest_image_path():
+    """
+    Get the path to the latest image file in the IMAGE_DIR.
+    :return: Path to the latest image file.
+    """
     image_files = [f for f in os.listdir(IMAGE_DIR) if f.endswith('.jpg')]
     if not image_files:
         return None
@@ -106,7 +142,13 @@ def get_latest_image_path():
     latest_image = image_files[0]
     return os.path.join(IMAGE_DIR, latest_image)
 
+
 def display_image(image_file):
+    """
+    Create a Python program that loads the image file created in task 2 and displays it on the screen using OpenCV.
+    :param image_file: Path to the input image.
+    :return: None
+    """
     if image_file:
         print(f"Latest image file: {image_file}")
         img = cv2.imread(image_file)
@@ -117,6 +159,11 @@ def display_image(image_file):
     else:
         print("No image files found.")
 
+
 def display_latest_image():
+    """
+    Display the latest image from the IMAGE_DIR.
+    :return: None
+    """
     latest_image_path = get_latest_image_path()
     display_image(latest_image_path)
